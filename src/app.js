@@ -24,6 +24,7 @@ app.use(helmet());
 const allowedOrigins = [
   'http://localhost:5173',
   'http://192.168.18.11:5173',
+  "https://melodia-streaming.netlify.app",
   process.env.FRONTEND_URL,
 ];
 
@@ -49,7 +50,7 @@ app.use(cookieParser());
 app.use(httpLogger);
 
 // 5. Routes
-app.use("/api/auth",  authRoutes);
+app.use("/api/auth", authRoutes);
 app.use("/api/music", musicRoutes);
 app.use("/api/songs", musicRoutes);
 app.use("/api/playlists", playlistRoutes);
@@ -61,15 +62,15 @@ app.use("/api/users", userRoutes);
 
 // Temporary socket verification route — remove after testing
 app.get("/api/socket-test", (req, res) => {
-    const nsp = getNotificationNamespace();
-    if (!nsp) return res.status(503).json({ error: "Socket not initialized" });
-    nsp.emit("test_ping", { message: "Socket is working", time: new Date() });
-    res.json({ success: true, message: "test_ping emitted to all /notifications clients" });
+  const nsp = getNotificationNamespace();
+  if (!nsp) return res.status(503).json({ error: "Socket not initialized" });
+  nsp.emit("test_ping", { message: "Socket is working", time: new Date() });
+  res.json({ success: true, message: "test_ping emitted to all /notifications clients" });
 });
 
 // 6. 404 handler
 app.use((req, res, next) => {
-    next(new AppError(`Route ${req.originalUrl} not found`, 404));
+  next(new AppError(`Route ${req.originalUrl} not found`, 404));
 });
 
 // 7. Global error handler — must be last
