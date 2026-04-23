@@ -125,7 +125,8 @@ export default function RegisterPage() {
                     <FormItem>
                       <FormLabel>Name</FormLabel>
                       <FormControl>
-                        <Input placeholder='Waleed Shahid' {...field} />
+                        <Input placeholder='Full Name
+                        ' {...field} />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
@@ -139,7 +140,7 @@ export default function RegisterPage() {
                     <FormItem>
                       <FormLabel>Username</FormLabel>
                       <FormControl>
-                        <Input placeholder='waleed_602' {...field} />
+                        <Input placeholder='Username' {...field} />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
