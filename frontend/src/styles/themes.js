@@ -72,7 +72,7 @@ export const THEMES = {
       '--border': '180 30% 14%',
       '--ring': '160 84% 39%',
       '--input': '180 30% 12%',
-      '--sidebar-width': '72px',
+      '--sidebar-width': '260px',
       '--radius': '0.75rem',
     },
     classes: {
@@ -99,9 +99,9 @@ export const THEMES = {
       letterSpacing: 'tracking-wide',
     },
     sidebar: {
-      expanded: false,
-      showLabels: false,
-      width: '72px',
+      expanded: true,
+      showLabels: true,
+      width: '260px',
       collapsible: false,
     },
   },

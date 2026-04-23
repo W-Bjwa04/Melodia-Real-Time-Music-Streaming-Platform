@@ -60,9 +60,9 @@ export function Sidebar({ onNavigate }) {
     navigate('/login')
   }
 
-  if (isArtist) {
-    const showLabels = !artistCollapsed
+  const showLabels = isArtist ? !artistCollapsed : theme.sidebar.showLabels
 
+  if (isArtist) {
     return (
       <aside className={cn('flex h-full w-full flex-col backdrop-blur-xl', theme.classes.sidebarBg)}>
         <div className='px-4 pb-4 pt-6'>
@@ -144,7 +144,7 @@ export function Sidebar({ onNavigate }) {
               <AvatarFallback>{initials}</AvatarFallback>
             </Avatar>
             {showLabels ? (
-              <div className='min-w-0'>
+              <div className='min-w-0 flex-1'>
                 <p className='truncate text-sm font-semibold text-violet-50'>{user?.name || 'Guest'}</p>
                 <p className='truncate text-xs text-violet-200/70'>@{user?.username || 'listener'}</p>
                 <span className={cn('mt-1 inline-flex rounded-full px-2 py-0.5 text-[10px] font-semibold', theme.classes.roleBadge)}>
@@ -161,7 +161,7 @@ export function Sidebar({ onNavigate }) {
               className='flex-1 justify-center text-violet-200 hover:bg-violet-900/30'
             >
               {showLabels ? <ChevronLeft className='mr-2 h-4 w-4' /> : <ChevronRight className='mr-2 h-4 w-4' />}
-              {showLabels ? 'Collapse' : 'Expand'}
+              {showLabels ? 'Collapse' : null}
             </Button>
             <div className='h-5 w-px bg-violet-900/40' />
             <Button variant='ghost' onClick={handleLogout} className='flex-1 justify-center text-violet-200 hover:bg-violet-900/30'>
@@ -176,22 +176,24 @@ export function Sidebar({ onNavigate }) {
 
   return (
     <aside className={cn('flex h-full w-full flex-col backdrop-blur-xl transition-all duration-300', theme.classes.sidebarBg)}>
-      <div className='px-6 pb-4 pt-6'>
+      <div className={cn('pb-4 pt-6', showLabels ? 'px-6' : 'px-0 flex justify-center')}>
         <div className='flex items-center gap-3'>
           <div className='grid h-10 w-10 place-items-center rounded-xl border border-emerald-500/40 bg-emerald-500/15 text-emerald-200'>
             <Disc3 className='h-5 w-5' />
           </div>
-          <div className='min-w-0'>
-            <p className='text-[11px] uppercase tracking-[0.22em] text-emerald-300/70'>♪ MELODIA</p>
-            <p className='inline-block border-b border-emerald-500/50 pb-1 text-xl font-black tracking-tight text-white shadow-[0_1px_8px_rgba(16,185,129,0.5)]'>
-              LOUNGE
-            </p>
-          </div>
+          {showLabels && (
+            <div className='min-w-0'>
+              <p className='text-[11px] uppercase tracking-[0.22em] text-emerald-300/70'>♪ MELODIA</p>
+              <p className='inline-block border-b border-emerald-500/50 pb-1 text-xl font-black tracking-tight text-white shadow-[0_1px_8px_rgba(16,185,129,0.5)]'>
+                LOUNGE
+              </p>
+            </div>
+          )}
         </div>
       </div>
 
       <nav className='flex-1 space-y-4 px-3 pt-4'>
-        <p className='px-3 text-[10px] font-bold tracking-[0.2em] text-emerald-400/40 uppercase'>Navigation</p>
+        {showLabels && <p className='px-3 text-[10px] font-bold tracking-[0.2em] text-emerald-400/40 uppercase'>Navigation</p>}
         <div className='space-y-1.5'>
           {commonLinks.map((link) => {
             const Icon = link.icon
@@ -203,15 +205,16 @@ export function Sidebar({ onNavigate }) {
                     <Button
                       variant='ghost'
                       className={cn(
-                        'h-11 w-full justify-start px-3 gap-3 rounded-xl transition-all duration-200',
+                        'h-11 w-full justify-start px-3 transition-all duration-200 rounded-xl',
+                        !showLabels && 'justify-center px-0',
                         isActive
                           ? 'bg-emerald-500/10 text-emerald-100 shadow-[0_0_20px_rgba(16,185,129,0.1)]'
                           : 'text-zinc-400 hover:bg-emerald-500/5 hover:text-emerald-200',
                       )}
                     >
                       <Icon className={cn('h-4.5 w-4.5 shrink-0', isActive ? 'text-emerald-400' : 'text-zinc-500')} />
-                      <span className='text-sm font-medium tracking-tight'>{link.label}</span>
-                      {isActive ? (
+                      {showLabels && <span className='ml-3 text-sm font-medium tracking-tight'>{link.label}</span>}
+                      {isActive && showLabels ? (
                         <span className='ml-auto h-1.5 w-1.5 rounded-full bg-emerald-400 shadow-[0_0_8px_rgba(16,185,129,0.6)]' />
                       ) : null}
                     </Button>
@@ -224,7 +227,7 @@ export function Sidebar({ onNavigate }) {
 
         <Separator className='mx-3 bg-emerald-900/40' />
 
-        <p className='px-3 text-[10px] font-bold tracking-[0.2em] text-emerald-400/40 uppercase'>Special</p>
+        {showLabels && <p className='px-3 text-[10px] font-bold tracking-[0.2em] text-emerald-400/40 uppercase'>Special</p>}
         <NavLink to='/discover' onClick={onNavigate}>
           {({ isActive }) => (
             <div className='relative'>
@@ -232,14 +235,15 @@ export function Sidebar({ onNavigate }) {
               <Button
                 variant='ghost'
                 className={cn(
-                  'h-11 w-full justify-start px-3 gap-3 rounded-xl',
+                  'h-11 w-full justify-start px-3 rounded-xl',
+                  !showLabels && 'justify-center px-0',
                   isActive
                     ? 'bg-emerald-500/10 text-emerald-100 shadow-[0_0_20px_rgba(16,185,129,0.1)]'
                     : 'text-zinc-400 hover:bg-emerald-500/5 hover:text-emerald-200',
                 )}
               >
                 <PlusCircle className={cn('h-4.5 w-4.5 shrink-0', isActive ? 'text-emerald-400' : 'text-zinc-500')} />
-                <span className='text-sm font-medium tracking-tight'>Discovery Mode</span>
+                {showLabels && <span className='ml-3 text-sm font-medium tracking-tight'>Discovery Mode</span>}
               </Button>
             </div>
           )}
@@ -249,17 +253,24 @@ export function Sidebar({ onNavigate }) {
       <div className='space-y-3 border-t border-emerald-900/50 p-3'>
         <Popover>
           <PopoverTrigger asChild>
-            <div className='flex cursor-pointer items-center gap-3 rounded-xl border border-emerald-800/30 bg-emerald-900/10 p-3 transition hover:bg-emerald-900/20'>
+            <div className={cn(
+              'flex cursor-pointer items-center gap-3 rounded-xl border border-emerald-800/30 bg-emerald-900/10 p-3 transition hover:bg-emerald-900/20',
+              !showLabels && 'justify-center px-0'
+            )}>
               <Avatar className='h-9 w-9 shrink-0'>
                 <AvatarFallback>{initials}</AvatarFallback>
               </Avatar>
-              <div className='min-w-0 flex-1'>
-                <p className='truncate text-sm font-bold text-emerald-50'>{user?.name || 'Guest'}</p>
-                <p className='truncate text-xs text-emerald-200/50'>@{user?.username || 'listener'}</p>
-              </div>
-              <div className={cn('shrink-0 rounded-full bg-emerald-500/10 px-2 py-0.5 text-[9px] font-black tracking-tighter text-emerald-400 border border-emerald-500/20')}>
-                LISTENER
-              </div>
+              {showLabels && (
+                <>
+                  <div className='min-w-0 flex-1'>
+                    <p className='truncate text-sm font-bold text-emerald-50'>{user?.name || 'Guest'}</p>
+                    <p className='truncate text-xs text-emerald-200/50'>@{user?.username || 'listener'}</p>
+                  </div>
+                  <div className={cn('shrink-0 rounded-full bg-emerald-500/10 px-2 py-0.5 text-[9px] font-black tracking-tighter text-emerald-400 border border-emerald-500/20')}>
+                    LISTENER
+                  </div>
+                </>
+              )}
             </div>
           </PopoverTrigger>
           <PopoverContent side='right' align='end' sideOffset={12} className='w-64 border-emerald-800/60 bg-[#0F1A1A] p-3 text-emerald-50 shadow-2xl'>
