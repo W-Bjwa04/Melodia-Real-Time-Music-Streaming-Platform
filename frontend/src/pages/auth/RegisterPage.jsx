@@ -154,7 +154,7 @@ export default function RegisterPage() {
                     <FormItem>
                       <FormLabel>Email</FormLabel>
                       <FormControl>
-                        <Input type='email' placeholder='waleed602@example.com' {...field} />
+                        <Input type='email' placeholder='user@example.com' {...field} />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
