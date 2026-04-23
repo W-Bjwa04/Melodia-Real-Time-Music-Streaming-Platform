@@ -54,6 +54,7 @@ export function Topbar({ onMenuOpen }) {
     isConnecting,
     markAsRead,
     markAllAsRead,
+    clearAllNotifications,
     setNotificationPreference,
   } = useSocket();
 
