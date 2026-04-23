@@ -10,9 +10,19 @@ export const connectSocket = (token) => {
 
   if (socketInstance) return socketInstance;
 
-  const baseUrl =
-    import.meta.env.VITE_SOCKET_URL ||
-    `${window.location.protocol}//${window.location.hostname}:3000`;
+  const apiBaseUrl = import.meta.env.VITE_API_BASE_URL;
+  let defaultBaseUrl = `${window.location.protocol}//${window.location.hostname}:3000`;
+
+  if (apiBaseUrl) {
+    try {
+      const url = new URL(apiBaseUrl, window.location.origin);
+      defaultBaseUrl = url.origin;
+    } catch (e) {
+      console.warn('[Socket] Could not parse VITE_API_BASE_URL for socket fallback', e);
+    }
+  }
+
+  const baseUrl = import.meta.env.VITE_SOCKET_URL || defaultBaseUrl;
 
   console.log('[Socket] Connecting to', `${baseUrl}${SOCKET_NAMESPACE}`);
   socketInstance = io(`${baseUrl}${SOCKET_NAMESPACE}`, {

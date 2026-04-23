@@ -1,4 +1,4 @@
-import { Bell, Menu, Search } from 'lucide-react';
+import { Bell, Loader2, Menu, Search } from 'lucide-react';
 import { formatDistanceToNow } from 'date-fns';
 import { useEffect, useMemo, useState } from 'react';
 import { useDebounce } from 'use-debounce';
@@ -21,7 +21,7 @@ import {
 } from '@/components/ui/dropdown-menu';
 import { Input } from '@/components/ui/input';
 import { ScrollArea } from '@/components/ui/scroll-area';
-import { Sheet, SheetContent, SheetTitle, SheetTrigger } from '@/components/ui/sheet';
+import { Sheet, SheetContent, SheetDescription, SheetTitle, SheetTrigger } from '@/components/ui/sheet';
 
 function SearchGroup({ title, items, onPick, formatter }) {
   if (!items?.length) return null;
@@ -51,6 +51,7 @@ export function Topbar({ onMenuOpen }) {
     notifications,
     unreadCount,
     isConnected,
+    isConnecting,
     markAsRead,
     markAllAsRead,
     setNotificationPreference,
@@ -178,7 +179,11 @@ export function Topbar({ onMenuOpen }) {
             size='icon'
             className={`relative transition-colors ${isConnected ? theme.classes.accentText : 'text-muted-foreground'}`}
           >
-            <Bell className='h-4 w-4' />
+            {isConnecting ? (
+              <Loader2 className='h-4 w-4 animate-spin' />
+            ) : (
+              <Bell className='h-4 w-4' />
+            )}
             {unreadCount ? (
               <Badge className='absolute -right-1 -top-1 h-5 min-w-5 px-1 text-[10px]'>{unreadCount}</Badge>
             ) : null}
@@ -191,10 +196,15 @@ export function Topbar({ onMenuOpen }) {
           <div className='shrink-0 border-b px-4 pb-3 pt-4 pr-12'>
             <div className='flex items-center gap-2'>
               <SheetTitle className='text-sm font-semibold leading-none'>Notifications</SheetTitle>
+              <SheetDescription className='sr-only'>View and manage your real-time notifications</SheetDescription>
               <span
-                className={`ml-1 h-2 w-2 rounded-full ${isConnected ? 'bg-emerald-500' : 'bg-zinc-400'}`}
+                className={`ml-1 h-2 w-2 rounded-full ${
+                  isConnected ? 'bg-emerald-500' : isConnecting ? 'bg-amber-500 animate-pulse' : 'bg-zinc-400'
+                }`}
               />
-              <span className='text-xs text-muted-foreground'>{isConnected ? 'Live' : 'Offline'}</span>
+              <span className='text-xs text-muted-foreground'>
+                {isConnected ? 'Live' : isConnecting ? 'Connecting...' : 'Offline'}
+              </span>
             </div>
             <div className='mt-3 flex items-center gap-1.5'>
               <Button

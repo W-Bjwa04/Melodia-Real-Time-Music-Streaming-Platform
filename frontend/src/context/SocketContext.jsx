@@ -41,6 +41,7 @@ export function SocketProvider({ children }) {
   const trendingCallbackRef = useRef(null);
 
   const [isConnected, setIsConnected] = useState(false);
+  const [isConnecting, setIsConnecting] = useState(false);
   const [notifications, setNotifications] = useState([]);
   const [unreadCount, setUnreadCount] = useState(0);
   const [listenerCounts, setListenerCounts] = useState({});
@@ -94,6 +95,7 @@ export function SocketProvider({ children }) {
     }
     closeSocketConnection();
     setIsConnected(false);
+    setIsConnecting(false);
   }, []);
 
   const connectSocket = useCallback(() => {
@@ -105,9 +107,11 @@ export function SocketProvider({ children }) {
 
     const socket = createSocketConnection(token);
     socketRef.current = socket;
+    setIsConnecting(true);
 
     const onConnect = async () => {
       setIsConnected(true);
+      setIsConnecting(false);
       console.log('Socket connected');
       const artistIds = await hydrateSubscriptions();
       socket.emit(SOCKET_EVENTS.REJOIN_ROOMS, { artistIds });
@@ -119,6 +123,7 @@ export function SocketProvider({ children }) {
     };
 
     const onConnectError = (error) => {
+      setIsConnecting(false);
       console.error('Socket connect_error:', error?.message || error);
       if ((error?.message || '').toLowerCase().includes('authentication')) {
         disconnectSocket();
@@ -286,6 +291,7 @@ export function SocketProvider({ children }) {
     () => ({
       socket: socketRef.current,
       isConnected,
+      isConnecting,
       notifications,
       unreadCount,
       listenerCounts,
@@ -301,6 +307,7 @@ export function SocketProvider({ children }) {
     }),
     [
       isConnected,
+      isConnecting,
       notifications,
       unreadCount,
       listenerCounts,
