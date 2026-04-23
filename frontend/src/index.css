@@ -1,0 +1,124 @@
+@import url('https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;700&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 0 0% 100%;
+    --foreground: 222.2 84% 4.9%;
+    --card: 0 0% 100%;
+    --card-foreground: 222.2 84% 4.9%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 222.2 84% 4.9%;
+    --primary: 262 83% 58%;
+    --primary-foreground: 210 40% 98%;
+    --secondary: 210 40% 96.1%;
+    --secondary-foreground: 222.2 47.4% 11.2%;
+    --muted: 210 40% 96.1%;
+    --muted-foreground: 215.4 16.3% 46.9%;
+    --accent: 262 83% 58%;
+    --accent-foreground: 210 40% 98%;
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 210 40% 98%;
+    --border: 214.3 31.8% 91.4%;
+    --input: 214.3 31.8% 91.4%;
+    --ring: 262 83% 58%;
+    --radius: 0.9rem;
+  }
+
+  .dark {
+    --background: 230 29% 8%;
+    --foreground: 210 40% 98%;
+    --card: 232 31% 11%;
+    --card-foreground: 210 40% 98%;
+    --popover: 232 31% 11%;
+    --popover-foreground: 210 40% 98%;
+    --primary: 263 80% 63%;
+    --primary-foreground: 210 40% 98%;
+    --secondary: 233 19% 19%;
+    --secondary-foreground: 210 40% 98%;
+    --muted: 233 16% 18%;
+    --muted-foreground: 215 20.2% 75%;
+    --accent: 263 80% 63%;
+    --accent-foreground: 210 40% 98%;
+    --destructive: 0 70% 45%;
+    --destructive-foreground: 210 40% 98%;
+    --border: 232 18% 24%;
+    --input: 232 18% 24%;
+    --ring: 263 80% 63%;
+  }
+
+  * {
+    @apply border-border;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
+
+  *::-webkit-scrollbar {
+    display: none;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+    font-family: 'Manrope', sans-serif;
+    min-height: 100vh;
+    background-image: radial-gradient(circle at 8% 8%, rgba(124, 58, 237, 0.22), transparent 38%),
+      radial-gradient(circle at 92% 16%, rgba(56, 189, 248, 0.18), transparent 35%);
+  }
+}
+
+html,
+body {
+  overflow-x: hidden;
+  scroll-behavior: smooth;
+}
+
+.overflow-y-auto,
+.overflow-y-scroll,
+.overflow-x-auto,
+.overflow-x-scroll,
+[data-radix-scroll-area-viewport] {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+[data-radix-scroll-area-viewport]::-webkit-scrollbar {
+  display: none;
+}
+
+.theme-artist body {
+  font-family: 'Space Grotesk', sans-serif;
+  background-image: radial-gradient(circle at 12% 8%, rgba(124, 58, 237, 0.36), transparent 42%),
+    radial-gradient(circle at 90% 22%, rgba(245, 158, 11, 0.18), transparent 34%),
+    linear-gradient(170deg, rgba(13, 10, 20, 1) 0%, rgba(16, 9, 29, 1) 55%, rgba(13, 10, 20, 1) 100%);
+}
+
+.theme-listener body {
+  font-family: 'Manrope', sans-serif;
+  background-image: radial-gradient(circle at 10% 12%, rgba(16, 185, 129, 0.3), transparent 42%),
+    radial-gradient(circle at 88% 18%, rgba(56, 189, 248, 0.18), transparent 34%),
+    linear-gradient(170deg, rgba(8, 15, 15, 1) 0%, rgba(10, 26, 24, 1) 55%, rgba(8, 15, 15, 1) 100%);
+}
+
+.theme-transitioning * {
+  transition: background-color 0.6s ease, border-color 0.6s ease, color 0.4s ease, box-shadow 0.6s ease !important;
+}
+
+@keyframes theme-wave {
+  0%,
+  100% {
+    transform: scaleY(0.35);
+    opacity: 0.45;
+  }
+  50% {
+    transform: scaleY(1);
+    opacity: 1;
+  }
+}
+
+.player-wave {
+  animation: theme-wave 1.2s ease-in-out infinite;
+  transform-origin: bottom;
+}
