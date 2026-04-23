@@ -245,6 +245,12 @@ export function SocketProvider({ children }) {
     await api.patch('/notifications/read-all').catch(() => {});
   }, [recalcUnread]);
 
+  const clearAllNotifications = useCallback(async () => {
+    setNotifications([]);
+    setUnreadCount(0);
+    await api.delete('/notifications').catch(() => {});
+  }, []);
+
   const toggleArtistSubscription = useCallback(async (artistId) => {
     const target = String(artistId);
     const currentlySubscribed = subscribedArtistIds.includes(target);
@@ -301,6 +307,7 @@ export function SocketProvider({ children }) {
       setNotificationPreference,
       markAsRead,
       markAllAsRead,
+      clearAllNotifications,
       toggleArtistSubscription,
       setTrendingCallback,
       user,
@@ -317,11 +324,13 @@ export function SocketProvider({ children }) {
       setNotificationPreference,
       markAsRead,
       markAllAsRead,
+      clearAllNotifications,
       toggleArtistSubscription,
       setTrendingCallback,
       user,
     ]
   );
+;
 
   return <SocketContext.Provider value={value}>{children}</SocketContext.Provider>;
 }

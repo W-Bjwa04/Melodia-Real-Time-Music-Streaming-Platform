@@ -37,9 +37,15 @@ const deleteOne = asyncHandler(async (req, res) => {
   return ApiResponse.success(res, 'Notification deleted', null);
 });
 
+const deleteAll = asyncHandler(async (req, res) => {
+  await notificationModel.deleteMany({ recipientId: req.user._id });
+  return ApiResponse.success(res, 'All notifications deleted', null);
+});
+
 export default {
   getMyNotifications,
   markOneAsRead,
   markAllAsRead,
   deleteOne,
+  deleteAll,
 };

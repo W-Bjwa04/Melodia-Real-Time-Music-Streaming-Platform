@@ -8,6 +8,7 @@ import { AlbumCard } from '@/components/shared/AlbumCard';
 import { TrackCard } from '@/components/shared/TrackCard';
 import { Button } from '@/components/ui/button';
 import { useSocket } from '@/hooks/useSocket';
+import { normalizeAlbum, normalizeTrack } from '@/lib/music';
 export default function ArtistProfilePage() {
   const { artistId } = useParams();
   const { subscribedArtistIds, toggleArtistSubscription } = useSocket();
@@ -18,8 +19,14 @@ export default function ArtistProfilePage() {
     const run = async () => {
       try {
         const profileRes = await api.get(`/artists/${artistId}/profile`);
+        const data = profileRes.data?.data || null;
 
-        setProfile(profileRes.data?.data || null);
+        if (data) {
+          data.singles = (data.singles || []).map(normalizeTrack);
+          data.albums = (data.albums || []).map(normalizeAlbum);
+        }
+
+        setProfile(data);
       } catch (err) {
         toast.error(err?.response?.data?.message || 'Failed to load artist profile');
       }

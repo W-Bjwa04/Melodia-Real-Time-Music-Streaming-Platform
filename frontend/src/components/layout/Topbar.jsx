@@ -215,6 +215,14 @@ export function Topbar({ onMenuOpen }) {
               >
                 Mark all read
               </Button>
+              <Button
+                size='sm'
+                variant='ghost'
+                className='h-7 px-2 text-xs text-red-400 hover:text-red-300 hover:bg-red-500/10'
+                onClick={clearAllNotifications}
+              >
+                Clear
+              </Button>
               <div className='ml-auto flex items-center gap-1.5'>
                 {/* Enable is highlighted (default) when already connected */}
                 <Button

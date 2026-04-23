@@ -175,98 +175,116 @@ export function Sidebar({ onNavigate }) {
   }
 
   return (
-    <TooltipProvider delayDuration={120}>
-      <aside className={cn('flex h-full w-full flex-col items-center py-4', theme.classes.sidebarBg)}>
-        <div className='grid h-10 w-10 place-items-center rounded-xl border border-emerald-700/50 bg-emerald-900/20 text-emerald-300'>
-          <Disc3 className='h-5 w-5' />
+    <aside className={cn('flex h-full w-full flex-col backdrop-blur-xl transition-all duration-300', theme.classes.sidebarBg)}>
+      <div className='px-6 pb-4 pt-6'>
+        <div className='flex items-center gap-3'>
+          <div className='grid h-10 w-10 place-items-center rounded-xl border border-emerald-500/40 bg-emerald-500/15 text-emerald-200'>
+            <Disc3 className='h-5 w-5' />
+          </div>
+          <div className='min-w-0'>
+            <p className='text-[11px] uppercase tracking-[0.22em] text-emerald-300/70'>♪ MELODIA</p>
+            <p className='inline-block border-b border-emerald-500/50 pb-1 text-xl font-black tracking-tight text-white shadow-[0_1px_8px_rgba(16,185,129,0.5)]'>
+              LOUNGE
+            </p>
+          </div>
         </div>
+      </div>
 
-        <div className='mt-6 flex w-full flex-1 flex-col items-center gap-2 px-2'>
+      <nav className='flex-1 space-y-4 px-3 pt-4'>
+        <p className='px-3 text-[10px] font-bold tracking-[0.2em] text-emerald-400/40 uppercase'>Navigation</p>
+        <div className='space-y-1.5'>
           {commonLinks.map((link) => {
             const Icon = link.icon
             return (
-              <Tooltip key={link.to}>
-                <TooltipTrigger asChild>
-                  <NavLink to={link.to} onClick={onNavigate} className='w-full'>
-                    {({ isActive }) => (
-                      <div className={cn('relative rounded-2xl', isActive ? 'border-l-2 border-emerald-400/90 pl-0.5' : '')}>
-                        <Button
-                          variant='ghost'
-                          className={cn(
-                            'h-11 w-full rounded-2xl p-0',
-                            isActive
-                              ? 'bg-emerald-500/15 text-emerald-200 shadow-[0_0_0_1px_rgba(16,185,129,0.25),0_0_16px_rgba(16,185,129,0.15)]'
-                              : theme.classes.sidebarInactiveLink,
-                          )}
-                        >
-                          <Icon className='h-4 w-4' />
-                        </Button>
-                      </div>
-                    )}
-                  </NavLink>
-                </TooltipTrigger>
-                <TooltipContent side='right' sideOffset={12} className='border border-emerald-900/40 bg-[#0F1A1A] text-emerald-200'>
-                  {link.label}
-                </TooltipContent>
-              </Tooltip>
-            )
-          })}
-
-          <Separator className='my-2 bg-emerald-900/40 opacity-30' />
-          <Tooltip>
-            <TooltipTrigger asChild>
-              <NavLink to='/discover' onClick={onNavigate} className='w-full'>
+              <NavLink key={link.to} to={link.to} onClick={onNavigate}>
                 {({ isActive }) => (
-                  <div className={cn('relative rounded-2xl', isActive ? 'border-l-2 border-emerald-400/90 pl-0.5' : '')}>
+                  <div className='relative'>
+                    {isActive ? <span className='absolute inset-y-2 left-0 w-0.5 rounded-full bg-emerald-400' /> : null}
                     <Button
                       variant='ghost'
                       className={cn(
-                        'h-11 w-full rounded-2xl p-0',
+                        'h-11 w-full justify-start px-3 gap-3 rounded-xl transition-all duration-200',
                         isActive
-                          ? 'bg-emerald-500/15 text-emerald-200 shadow-[0_0_0_1px_rgba(16,185,129,0.25),0_0_16px_rgba(16,185,129,0.15)]'
-                          : theme.classes.sidebarInactiveLink,
+                          ? 'bg-emerald-500/10 text-emerald-100 shadow-[0_0_20px_rgba(16,185,129,0.1)]'
+                          : 'text-zinc-400 hover:bg-emerald-500/5 hover:text-emerald-200',
                       )}
                     >
-                      <PlusCircle className='h-4 w-4' />
+                      <Icon className={cn('h-4.5 w-4.5 shrink-0', isActive ? 'text-emerald-400' : 'text-zinc-500')} />
+                      <span className='text-sm font-medium tracking-tight'>{link.label}</span>
+                      {isActive ? (
+                        <span className='ml-auto h-1.5 w-1.5 rounded-full bg-emerald-400 shadow-[0_0_8px_rgba(16,185,129,0.6)]' />
+                      ) : null}
                     </Button>
                   </div>
                 )}
               </NavLink>
-            </TooltipTrigger>
-            <TooltipContent side='right' sideOffset={12} className='border border-emerald-900/40 bg-[#0F1A1A] text-emerald-200'>
-              Discovery Mode
-            </TooltipContent>
-          </Tooltip>
+            )
+          })}
         </div>
 
+        <Separator className='mx-3 bg-emerald-900/40' />
+
+        <p className='px-3 text-[10px] font-bold tracking-[0.2em] text-emerald-400/40 uppercase'>Special</p>
+        <NavLink to='/discover' onClick={onNavigate}>
+          {({ isActive }) => (
+            <div className='relative'>
+              {isActive ? <span className='absolute inset-y-2 left-0 w-0.5 rounded-full bg-emerald-400' /> : null}
+              <Button
+                variant='ghost'
+                className={cn(
+                  'h-11 w-full justify-start px-3 gap-3 rounded-xl',
+                  isActive
+                    ? 'bg-emerald-500/10 text-emerald-100 shadow-[0_0_20px_rgba(16,185,129,0.1)]'
+                    : 'text-zinc-400 hover:bg-emerald-500/5 hover:text-emerald-200',
+                )}
+              >
+                <PlusCircle className={cn('h-4.5 w-4.5 shrink-0', isActive ? 'text-emerald-400' : 'text-zinc-500')} />
+                <span className='text-sm font-medium tracking-tight'>Discovery Mode</span>
+              </Button>
+            </div>
+          )}
+        </NavLink>
+      </nav>
+
+      <div className='space-y-3 border-t border-emerald-900/50 p-3'>
         <Popover>
           <PopoverTrigger asChild>
-            <button
-              type='button'
-              className={cn(
-                'mt-auto rounded-full border border-emerald-700/60 p-1.5 transition hover:border-emerald-500/70 hover:bg-emerald-900/30',
-                isPlaying && currentTrack ? 'ring-2 ring-emerald-500/30 animate-pulse' : '',
-              )}
-            >
-              <Avatar className='h-9 w-9'>
+            <div className='flex cursor-pointer items-center gap-3 rounded-xl border border-emerald-800/30 bg-emerald-900/10 p-3 transition hover:bg-emerald-900/20'>
+              <Avatar className='h-9 w-9 shrink-0'>
                 <AvatarFallback>{initials}</AvatarFallback>
               </Avatar>
-            </button>
-          </PopoverTrigger>
-          <PopoverContent className='w-64 border-emerald-800/60 bg-[#0F1A1A] text-emerald-50'>
-            <p className='text-sm font-semibold'>{user?.name || 'Guest'}</p>
-            <p className='text-xs text-emerald-200/70'>@{user?.username || 'listener'}</p>
-            <div className='mt-3 flex items-center justify-between rounded-md border border-emerald-900/50 bg-emerald-900/20 p-2'>
-              <span className='text-xs text-emerald-300'>Lounge listener</span>
-              <span className={cn('rounded-full px-2 py-0.5 text-[10px] font-semibold', theme.classes.roleBadge)}>LISTENER</span>
+              <div className='min-w-0 flex-1'>
+                <p className='truncate text-sm font-bold text-emerald-50'>{user?.name || 'Guest'}</p>
+                <p className='truncate text-xs text-emerald-200/50'>@{user?.username || 'listener'}</p>
+              </div>
+              <div className={cn('shrink-0 rounded-full bg-emerald-500/10 px-2 py-0.5 text-[9px] font-black tracking-tighter text-emerald-400 border border-emerald-500/20')}>
+                LISTENER
+              </div>
             </div>
-            <Button variant='outline' className='mt-3 w-full border-emerald-700/40 bg-emerald-900/20' onClick={handleLogout}>
-              <LogOut className='mr-2 h-4 w-4' />
-              Logout
-            </Button>
+          </PopoverTrigger>
+          <PopoverContent side='right' align='end' sideOffset={12} className='w-64 border-emerald-800/60 bg-[#0F1A1A] p-3 text-emerald-50 shadow-2xl'>
+            <div className='space-y-2'>
+              <div className='flex items-center gap-3 pb-2 border-b border-emerald-900/40'>
+                <Avatar className='h-10 w-10'>
+                  <AvatarFallback>{initials}</AvatarFallback>
+                </Avatar>
+                <div className='min-w-0'>
+                  <p className='truncate font-bold'>{user?.name || 'Guest'}</p>
+                  <p className='truncate text-xs text-emerald-400'>Lounge Member</p>
+                </div>
+              </div>
+              <Button
+                variant='outline'
+                className='w-full border-emerald-700/40 bg-emerald-900/20 text-emerald-100 hover:bg-red-500/10 hover:text-red-400 hover:border-red-500/40'
+                onClick={handleLogout}
+              >
+                <LogOut className='mr-2 h-4 w-4' />
+                Sign Out
+              </Button>
+            </div>
           </PopoverContent>
         </Popover>
-      </aside>
-    </TooltipProvider>
+      </div>
+    </aside>
   )
 }
